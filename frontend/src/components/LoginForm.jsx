@@ -10,6 +10,7 @@ export default function LoginFrom() {
   // const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
+  const [responce, setResponce] = useState(null);
   // const location = useLocation();
   // const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export default function LoginFrom() {
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
-        console.log('fromik', res);
+        setResponce(res.data);
         // localStorage.setItem('userId', JSON.stringify(res.data));
         // auth.logIn();
         // const { from } = location.state;
@@ -76,6 +77,7 @@ export default function LoginFrom() {
         <Form.Label>Пароль</Form.Label>
       </Form.Group>
       <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+      {responce}
     </Form>
   );
 }
