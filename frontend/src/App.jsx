@@ -16,8 +16,7 @@ import LoginPage from './components/LoginPage';
 import Header from './components/Header';
 
 function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(true);
-
+  const [loggedIn, setLoggedIn] = useState(false);
   const logIn = useCallback(() => {
     setLoggedIn(true);
   }, []);
@@ -30,7 +29,7 @@ function AuthProvider({ children }) {
   const authValue = useMemo(
     () => (
       { loggedIn, logIn, logOut }),
-    [loggedIn.loggedIn, logIn, logOut],
+    [loggedIn, logIn, logOut],
   );
 
   return (

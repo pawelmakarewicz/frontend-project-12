@@ -2,17 +2,16 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import useAuth from '../hooks/index';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/index';
 import routes from '../routes';
 
 export default function LoginFrom() {
-  // const auth = useAuth();
+  const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  const [responce, setResponce] = useState(null);
-  // const location = useLocation();
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -27,11 +26,10 @@ export default function LoginFrom() {
       setAuthFailed(false);
       try {
         const res = await axios.post(routes.loginPath(), values);
-        setResponce(res.data);
-        // localStorage.setItem('userId', JSON.stringify(res.data));
-        // auth.logIn();
-        // const { from } = location.state;
-        // navigate(from);
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        auth.logIn();
+        const { from } = location.state;
+        navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
@@ -77,7 +75,6 @@ export default function LoginFrom() {
         <Form.Label>Пароль</Form.Label>
       </Form.Group>
       <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
-      {responce}
     </Form>
   );
 }
