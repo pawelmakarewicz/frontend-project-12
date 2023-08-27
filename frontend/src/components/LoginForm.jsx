@@ -25,11 +25,9 @@ export default function LoginFrom() {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
-        auth.logIn();
-        const { from } = location.state;
-        navigate(from);
+        await auth.logIn(values);
+        const path = location.state?.from || '/';
+        navigate(path);
       } catch (err) {
         formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {

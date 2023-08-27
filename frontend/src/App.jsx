@@ -8,16 +8,20 @@ import {
   useLocation,
 } from 'react-router-dom';
 
+import axios from 'axios';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/index';
 import ChatPage from './components/chatPage';
 import ErrorPage from './components/ErrorPage';
 import LoginPage from './components/LoginPage';
 import Header from './components/Header';
+import routes from './routes';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
-  const logIn = useCallback(() => {
+  const logIn = useCallback(async (loggedInData) => {
+    const res = await axios.post(routes.loginPath(), loggedInData);
+    localStorage.setItem('userId', JSON.stringify(res.data));
     setLoggedIn(true);
   }, []);
 
