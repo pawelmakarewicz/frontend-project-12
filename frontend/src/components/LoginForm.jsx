@@ -1,10 +1,8 @@
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index';
-import routes from '../routes';
 
 export default function LoginFrom() {
   const auth = useAuth();

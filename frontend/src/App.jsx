@@ -17,16 +17,18 @@ import LoginPage from './components/LoginPage';
 import Header from './components/Header';
 import routes from './routes';
 
+const USER_ID = 'userId';
+
 function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem(USER_ID));
   const logIn = useCallback(async (loggedInData) => {
     const res = await axios.post(routes.loginPath(), loggedInData);
-    localStorage.setItem('userId', JSON.stringify(res.data));
+    localStorage.setItem(USER_ID, JSON.stringify(res.data));
     setLoggedIn(true);
   }, []);
 
   const logOut = useCallback(() => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem(USER_ID);
     setLoggedIn(false);
   }, []);
 
