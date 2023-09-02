@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/index';
+import Root from './components/Root';
 import ChatPage from './components/chatPage';
 import ErrorPage from './components/ErrorPage';
 import LoginPage from './components/LoginPage';
@@ -55,23 +56,25 @@ function PrivateRoute({ children }) {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/"
-            element={(
-              <PrivateRoute>
-                <ChatPage />
-              </PrivateRoute>
-            )}
-          />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Root>
+      <AuthProvider>
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/"
+              element={(
+                <PrivateRoute>
+                  <ChatPage />
+                </PrivateRoute>
+              )}
+            />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </Root>
   );
 }
 
