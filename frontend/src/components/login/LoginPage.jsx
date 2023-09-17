@@ -12,7 +12,7 @@ export default function LoginPage() {
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-muted">
-              2 days ago
+              SignUp
             </Card.Footer>
           </Card>
         </div>

@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index';
+import useAuth from '../../hooks/useAuth';
 
 export default function LoginFrom() {
   const auth = useAuth();

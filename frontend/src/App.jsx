@@ -10,11 +10,11 @@ import {
 
 import axios from 'axios';
 import AuthContext from './contexts/index';
-import useAuth from './hooks/index';
+import useAuth from './hooks/useAuth';
 import Root from './components/Root';
-import ChatPage from './components/chatPage';
+import ChatPage from './components/chat/ChatPage';
 import ErrorPage from './components/ErrorPage';
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/login/LoginPage';
 import Header from './components/Header';
 import routes from './routes';
 

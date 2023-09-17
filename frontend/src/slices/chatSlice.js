@@ -4,17 +4,20 @@ import axios from 'axios';
 import routes from '../routes';
 
 const initialState = {
-  channels: null,
-  currentChannelIdL: null,
-  messages: null,
+  appData: {
+    channels: null,
+    currentChannelIdL: null,
+    messages: null,
+  },
+  socket: null,
   loadingStatus: null,
   error: null,
 };
 const USER_ID = 'userId';
 
-export const getCatalogues = createAsyncThunk(
-  'chanels/getChanels',
-  async () => {
+export const initializeApp = createAsyncThunk(
+  'chat/getAppData',
+  async (_, thunkApi) => {
     const { token } = JSON.parse(localStorage.getItem(USER_ID));
     const authorization = {
       Authorization: `Bearer ${token}`,
@@ -27,21 +30,23 @@ export const getCatalogues = createAsyncThunk(
 const catalogueSlice = createSlice({
   name: 'chatSlice',
   initialState,
+  reducers: {
+    initSocket: (state, action) => {
+      state.socket = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getCatalogues.pending, (state) => {
+      .addCase(initializeApp.pending, (state) => {
         state.loadingStatus = 'loading';
         state.error = null;
       })
-      .addCase(getCatalogues.fulfilled, (state, action) => {
-        const { channels, currentChannelId, messages } = action.payload;
-        state.channels = channels;
-        state.currentChannelId = currentChannelId;
-        state.messages = messages;
+      .addCase(initializeApp.fulfilled, (state, action) => {
+        state.appData = action.payload;
         state.loadingStatus = 'loaded';
         state.error = null;
       })
-      .addCase(getCatalogues.rejected, (state, action) => {
+      .addCase(initializeApp.rejected, (state, action) => {
         state.loadingStatus = 'failed';
         state.error = action.error;
       });
