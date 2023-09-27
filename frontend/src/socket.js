@@ -13,6 +13,13 @@ class Socket {
       this.socket = io();
     }
   }
+
+  disconnect() {
+    if (this.socket) {
+      this.socket.close();
+      this.socket = null;
+    }
+  }
 }
 
 export default Socket;
