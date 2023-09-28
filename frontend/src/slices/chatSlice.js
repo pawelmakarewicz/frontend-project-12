@@ -3,20 +3,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
 
-function transformArrayToObject(arr) {
+function transformArrayToObject(messages, channels) {
   const result = {};
-
-  for (let i = 0; i < arr.length; i += 1) {
-    const obj = arr[i];
-    const {
-      channelId, body, username, id,
-    } = obj;
-
-    if (!result[channelId]) {
-      result[channelId] = [];
-    }
-
-    result[channelId].push({ body, username, id });
+  channels.forEach((channel) => {
+    result[channel.id] = [];
+  });
+  if (messages.length > 0) {
+    messages.forEach((message) => {
+      if (result[message.channelId]) {
+        result[message.channelId].push(message);
+      }
+    });
   }
 
   return result;
@@ -57,7 +54,6 @@ const chatSlice = createSlice({
       state.appData.currentMessage = '';
     },
     updateAppDataMessages: (state, action) => {
-      console.log('action.payload', action.payload);
       const { channelId, body, username } = action.payload;
       state.appData.messages[channelId].push({ body, username });
     },
@@ -71,7 +67,10 @@ const chatSlice = createSlice({
       .addCase(initializeApp.fulfilled, (state, action) => {
         const { messages, currentChannelId, channels } = action.payload;
         state.appData = {
-          ...state.appData, currentChannelId, channels, messages: transformArrayToObject(messages),
+          ...state.appData,
+          currentChannelId,
+          channels,
+          messages: transformArrayToObject(messages, channels),
         };
         state.loadingStatus = 'loaded';
         state.error = null;

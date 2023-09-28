@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { Fragment } from 'react';
 
 function Message({ text, username }) {
   return (
@@ -21,7 +22,11 @@ export default function MessagesBox() {
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5">
       { messages
-        ? messages.map(({ body, username, id }) => <Message text={body} username={username} key={id} />)
+        ? messages.map(({ body, username, id }) => (
+          <Fragment key={id}>
+            <Message text={body} username={username} />
+          </Fragment>
+        ))
         : null}
     </div>
   );
