@@ -14,7 +14,7 @@ export default function MessageInput() {
   return (
     <div className="mt-auto px-5 py-3">
       <form
-        noValidate=""
+        noValidate
         className="py-1 border rounded-2"
         onSubmit={((e) => {
           e.preventDefault();

@@ -15,7 +15,6 @@ function transformArrayToObject(messages, channels) {
       }
     });
   }
-
   return result;
 }
 
@@ -57,6 +56,9 @@ const chatSlice = createSlice({
       const { channelId, body, username } = action.payload;
       state.appData.messages[channelId].push({ body, username });
     },
+    setCurrentChanelId: (state, action) => {
+      state.appData.currentChannelId = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -66,6 +68,7 @@ const chatSlice = createSlice({
       })
       .addCase(initializeApp.fulfilled, (state, action) => {
         const { messages, currentChannelId, channels } = action.payload;
+        console.log('channels', channels);
         state.appData = {
           ...state.appData,
           currentChannelId,
@@ -86,5 +89,6 @@ export const {
   setCurrentMessage,
   updateAppDataMessages,
   updateAppDataAfterSendingMessage,
+  setCurrentChanelId,
 } = chatSlice.actions;
 export default chatSlice.reducer;

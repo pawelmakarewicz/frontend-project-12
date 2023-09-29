@@ -1,13 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
+import { Fragment } from 'react';
+import { setCurrentChanelId } from '../../slices/chatSlice';
 
 function Channel({ chanelId, currentId, channelName }) {
+  const dispatch = useDispatch();
   const btnClass = cn('btn w-100 rounded-0 text-start', {
     'btn-secondary': currentId === chanelId,
   });
   return (
     <li className="nav-item w-100">
-      <button type="button" className={btnClass}>
+      <button type="button" className={btnClass} onClick={() => dispatch(setCurrentChanelId(chanelId))}>
         <span className="me-1">#</span>
         {channelName}
       </button>
@@ -29,10 +32,13 @@ export default function Sidebar() {
           </svg>
         </button>
       </div>
-      <ul id="channels-box" className="flex-column   px-2 mb-3 overflow-auto h-100 d-block">
+      <ul id="channels-box" className="flex-column px-2 mb-3 overflow-auto h-100 d-block">
         { channels ? channels
           .map(({ id, name }) => (
-            <Channel chanelId={id} currentId={currentChannelId} channelName={name} key={id} />))
+            <Fragment key={id}>
+              <Channel chanelId={id} currentId={currentChannelId} channelName={name} />
+            </Fragment>
+          ))
           : null}
       </ul>
     </>
