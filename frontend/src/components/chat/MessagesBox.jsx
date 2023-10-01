@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { Fragment } from 'react';
 
+// eslint-disable-next-line react/prop-types
 function Message({ text, username }) {
   return (
     <div className="text-break mb-2">

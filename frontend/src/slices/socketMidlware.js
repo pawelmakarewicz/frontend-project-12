@@ -11,10 +11,28 @@ const socketMiddleware = (socketClient) => (params) => (next) => (action) => {
       socketClient.socket.on('newMessage', (payload) => {
         dispatch(updateAppDataMessages(payload));
       });
+      socketClient.socket.on('newChannel', (payload) => {
+        console.log(payload);
+      });
+      socketClient.socket.on('removeChannel', (payload) => {
+        console.log(payload);
+      });
+      socketClient.socket.on('renameChannel', (payload) => {
+        console.log(payload);
+      });
       break;
     }
     case 'socket/sendNewMessage':
       socketClient.socket.emit('newMessage', { body: currentMessage, channelId: currentChannelId, username: 'admin' }, () => { dispatch(updateAppDataAfterSendingMessage()); });
+      break;
+    case 'socket/newChannel':
+      console.log('socket/newChannel');
+      break;
+    case 'socket/removeChannel':
+      console.log('socket/removeChannel');
+      break;
+    case 'socket/renameChannel':
+      console.log('socket/renameChannel');
       break;
     case 'socket/disconnect':
       socketClient.disconnect();

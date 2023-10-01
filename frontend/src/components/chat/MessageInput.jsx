@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { setCurrentMessage } from '../../slices/chatSlice';
+import disableInputTemporary from '../../lib/disableInputTemporary';
+import useFocus from '../../hooks/useFocus';
 
 function IsStringEmpty(string) {
   return /^\s*$/.test(string);
@@ -10,6 +12,7 @@ export default function MessageInput() {
   const [inputState, setInputState] = useState(false);
   const dispatch = useDispatch();
   const currentText = useSelector((state) => state.chat.appData.currentMessage);
+  const inputRef = useFocus();
   useEffect(() => { setInputState(false); }, [currentText]);
   return (
     <div className="mt-auto px-5 py-3">
@@ -19,17 +22,11 @@ export default function MessageInput() {
         onSubmit={((e) => {
           e.preventDefault();
           dispatch({ type: 'socket/sendNewMessage' });
-          setInputState(true);
-          setTimeout(
-            () => {
-              setInputState(false);
-            },
-            3000,
-          );
+          disableInputTemporary(setInputState);
         })}
       >
         <div className="input-group has-validation">
-          <input name="body" aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" value={currentText} onChange={(e) => { dispatch(setCurrentMessage(e.currentTarget.value)); }} disabled={inputState} />
+          <input name="body" aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" value={currentText} onChange={(e) => { dispatch(setCurrentMessage(e.currentTarget.value)); }} disabled={inputState} ref={inputRef} />
           <button type="submit" className="btn btn-group-vertical border-0" disabled={IsStringEmpty(currentText)}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
               <path

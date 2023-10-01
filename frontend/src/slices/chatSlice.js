@@ -68,7 +68,6 @@ const chatSlice = createSlice({
       })
       .addCase(initializeApp.fulfilled, (state, action) => {
         const { messages, currentChannelId, channels } = action.payload;
-        console.log('channels', channels);
         state.appData = {
           ...state.appData,
           currentChannelId,

@@ -1,19 +1,16 @@
 import Form from 'react-bootstrap/Form';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import useFocus from '../../hooks/useFocus';
 
 export default function LoginFrom() {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
-  const inputRef = useRef();
+  const inputRef = useFocus();
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -69,6 +66,9 @@ export default function LoginFrom() {
           isInvalid={authFailed}
         />
         <Form.Label>Пароль</Form.Label>
+        <Form.Control.Feedback type="invalid" className="invalid-tooltip">
+          Неверное имя пользователя или пароль
+        </Form.Control.Feedback>
       </Form.Group>
       <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
     </Form>

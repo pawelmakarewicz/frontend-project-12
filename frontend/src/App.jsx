@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/useAuth';
 import Root from './components/Root';
@@ -17,6 +18,8 @@ import ErrorPage from './components/ErrorPage';
 import LoginPage from './components/login/LoginPage';
 import Header from './components/Header';
 import routes from './routes';
+import getModal from './components/modals/index';
+import { hideModal } from './slices/modalSlice';
 
 const USER_ID = 'userId';
 
@@ -54,6 +57,17 @@ function PrivateRoute({ children }) {
   );
 }
 
+function Modal() {
+  const dispatch = useDispatch();
+  const onHide = () => dispatch(hideModal());
+  const modalType = useSelector((state) => state.modal.type);
+  if (!modalType) {
+    return null;
+  }
+  const Component = getModal(modalType);
+  return <Component onHide={onHide} />;
+}
+
 function App() {
   return (
     <Root>
@@ -73,6 +87,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Router>
+        <Modal />
       </AuthProvider>
     </Root>
   );
